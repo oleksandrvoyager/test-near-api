@@ -1,0 +1,33 @@
+# See: https://docs.github.com/en/actions/writing-workflows
+---
+name: Release
+
+on:
+  push:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: windows-x64
+            target: x86_64-pc-windows-gnu
+            extension: exe
+    name: Build ${{ matrix.artifact }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: false
+    steps:
+      - name: Build
+        uses: asimov-platform/build-rust-action@v3
+
+        with:
+          target: ${{ matrix.target }}
+          artifact-name: ${{ matrix.artifact }}
+          artifact-prefix: test
+          binary-name: near-api
+          binary-extension: ${{ matrix.extension }}
+          strip-artifact: ${{ matrix.strip || 'false' }}
+          use-zigbuild: ${{ matrix.use-zigbuild || 'false' }}
+          rust-toolchain: 1.81.0
