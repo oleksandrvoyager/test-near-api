@@ -74,3 +74,7 @@ workspaces = ["dep:near-workspaces"]
 [dev-dependencies]
 tokio = { version = "1.0", default-features = false, features = ["full"] }
 near-api = { path = ".", features = ["workspaces"] }
+
+[[bin]]
+name = "near-api"
+path = "src/main.rs"
